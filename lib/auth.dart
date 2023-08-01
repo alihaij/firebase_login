@@ -1,5 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+
+// final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,12 +17,32 @@ class _AuthScreenState extends State<AuthScreen> {
 
   var _entredEmail = '';
   var _entredPassword = '';
-  void _submit() {
+  Future<void> _submit() async {
     final isValid = _formKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
     if (isValid) {
       _formKey.currentState!.save();
       debugPrint(_entredEmail);
       debugPrint(_entredPassword);
+      // try {
+      if (_isLogin) {
+        //log users in
+        // final UserCredential = await _firebase.signInWithEmailAndPassword(
+        //     email: _entredEmail, password: _entredPassword);
+        // print(UserCredential);
+      } else {
+        // final UserCredential = await _firebase.createUserWithEmailAndPassword(
+        //     email: _entredEmail, password: _entredPassword);
+        // print(UserCredential);
+      }
+      // } on FirebaseAuthException catch (error) {
+      //   if (error.code == 'email-already-in-use') {}
+      //   ScaffoldMessenger.of(context).clearSnackBars();
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text(error.message ?? 'Authentication faild.')));
+      // }
     }
   }
 
@@ -83,11 +105,11 @@ class _AuthScreenState extends State<AuthScreen> {
                           height: 12,
                         ),
                         ElevatedButton(
+                          onPressed: _submit,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context)
                                   .colorScheme
                                   .primaryContainer),
-                          onPressed: () {},
                           child: Text(_isLogin ? 'Login' : 'Signup'),
                         ),
                         TextButton(
